@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const studenti = [
+let studenti = [
     {fname: 'Pero', lname: 'Perovski'},
     {fname: 'Janko', lname: 'Jankovski'},
     {fname: 'Stanko', lname: 'Stankovski'},
@@ -30,7 +30,12 @@ api.post('/studenti', (req, res) => {
 });
 
 api.put('/studenti/:index', (req, res) => {
-    res.send('put updated student!');
+    if (studenti[req.params.index] !== undefined) {
+        studenti[req.params.index] = req.body;
+        res.status(204).send('ok');
+    } else {
+        res.status(404).send('not found');
+    }
 });
 
 // api.patch('/studenti/:index', (req, res) => {
@@ -38,7 +43,14 @@ api.put('/studenti/:index', (req, res) => {
 // });
 
 api.delete('/studenti/:index', (req, res) => {
-    res.send('deleted a student!');
+    if (studenti[req.params.index] !== undefined) {
+        studenti = studenti.filter((s, i) => {
+            return i !== Number(req.params.index);
+        });
+        res.status(204).send('ok');
+    } else {
+        res.status(404).send('not found');
+    }
 });
 
 // CRUD -> Create, Read, Update, Delete
