@@ -1,6 +1,1 @@
-[
-    {"fname": "Pero", "lname": "Perovski"},
-    {"fname": "Janko", "lname": "Jankovski"},
-    {"fname": "Stanko", "lname": "Stankovski"},
-    {"fname": "Ivan", "lname": "Ivanovski"}
-]
+[{"name":"Star Wars","year":1982},{"name":"The Godfather","year":1978},{"name":"Home Alone","year":1991},{"name":"THE MATRIX","year":1999}]

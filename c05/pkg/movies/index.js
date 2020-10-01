@@ -13,6 +13,18 @@ const Read = () => {
     });
 };
 
+const Write = (data) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(dataSource, JSON.stringify(data), err => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve();
+        });
+    });
+};
+
 module.exports = {
     Read,
+    Write
 };
