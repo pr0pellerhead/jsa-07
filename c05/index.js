@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 // import local modules
+const config = require('./pkg/config');
 const movies = require('./handlers/movies');
 const actors = require('./handlers/actors');
 
@@ -26,9 +27,9 @@ api.put('/actors/:id', actors.Update);
 api.delete('/actors/:id', actors.Remove);
 
 // start server
-api.listen(9000, err => {
+api.listen(config.Get('server').port, err => {
     if(err) {
         return console.error(err);
     }
-    return console.log('API started on port 9000');
+    return console.log(`API started on port ${config.Get('server').port}`);
 });
