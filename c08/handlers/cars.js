@@ -1,4 +1,5 @@
 const Car = require('../pkg/cars');
+const CarValidator = require('../pkg/cars/validator');
 
 const GetAll = async (req, res) => {
     try {
@@ -25,6 +26,11 @@ const GetOne = async (req, res) => {
 };
 
 const Create = async (req, res) => {
+    let v = await CarValidator.validate(req.body);
+    if(!v) {
+        console.log('validation error');
+        return res.status(400).send('Bad request');
+    }
     try {
         let c = await Car.Create(req.body);
         res.status(201).send(c);
@@ -32,7 +38,6 @@ const Create = async (req, res) => {
         console.error(err);
         res.status(500).send('Internal server error');
     }
-    // res.send('ok');
 };
 
 const Update = async (req, res) => {
