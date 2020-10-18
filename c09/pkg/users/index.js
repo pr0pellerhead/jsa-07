@@ -18,11 +18,12 @@ const Create = (data) => {
 };
 
 const GetAll = () => {
-    return User.find({});
+    // return User.find({}, {password: 0}); // {password: 0} tells mongo db not to return the password field
+    return User.find({}, {email: 1}); // {email: 1} tells mongo db to return ONLY the email field
 };
 
 const GetOne = (id) => {
-    return User.find({_id: id});
+    return User.findOne({_id: id});
 };
 
 const GetOneByEmail = (email) => {
