@@ -28,6 +28,7 @@ const login = async (req, res) => {
             };
             // create the token and sign it with the jwt_key from the config
             let token = jwt.sign(token_payload, config.Get('server').jwt_key);
+            res.cookie('jwt', token);
             res.status(200).send({jwt: token});
         }
     } else {
