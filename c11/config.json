@@ -12,8 +12,8 @@
         "dbname": "baza1"
     },
     "email": {
-        "api_key": "1a8a9cdc1bf64391a7f05818fe4a68d8-a65173b1-202f8f99",
-        "domain": "sandboxadc41bf9b93c45c18f6daaa39192ac5d.mailgun.org"
+        "api_key": "",
+        "domain": ""
     },
     "storage": {
         "dir": "uploads/",
