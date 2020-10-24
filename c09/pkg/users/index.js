@@ -7,7 +7,9 @@ const User = mongoose.model(
         email: String,
         password: String,
         birthday: Date,
-        phone: String
+        phone: String,
+        register_hash: String,
+        active: Boolean
     },
     'users'
 );

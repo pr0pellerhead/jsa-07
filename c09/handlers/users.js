@@ -1,6 +1,8 @@
 const UserModel = require('../pkg/users');
 const UserValidator = require('../pkg/users/validator');
 const bcrypt = require('bcryptjs');
+const mailer = require('../pkg/mailer');
+const strings = require('../pkg/strings');
 
 const create = async (req, res) => {
     // validate user sent input
@@ -26,9 +28,19 @@ const create = async (req, res) => {
     req.body.password = bcrypt.hashSync(req.body.password);
     try {
         // save user data into database
-        let out = await UserModel.Create(req.body);
+        let userData = {
+            ...req.body, 
+            register_hash: strings.randomString(20), 
+            active: false
+        };
+        let out = await UserModel.Create(userData);
         out.__v = null;
         out.password = null;
+
+        // send the welcome email
+        let mout = await mailer.sendEmail('WELCOME', { name: req.body.full_name, hash: userData.register_hash }, req.body.email);
+        console.log(mout);
+
         return res.status(201).send(out);
     } catch(err) {
         console.log(err);
