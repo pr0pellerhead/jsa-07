@@ -91,12 +91,27 @@ const remove = async (req, res) => {
     }
 };
 
+const confirm = async (req, res) => {
+    try {
+        let up = await UserModel.UpdateByRegisterHash(req.body.hash, { active: true });
+        if(!up.n) {
+            console.log('Cannot activate user. Not found!');
+            return res.status(404).send('Not Found');
+        }
+        return res.status(201).send('No Content');
+    } catch(err) {
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
 module.exports = {
     create,
     getAll,
     getOne,
     update,
-    remove
+    remove,
+    confirm
 };
 
 

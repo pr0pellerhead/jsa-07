@@ -12,6 +12,12 @@ const UserLoginSchema = {
     password: 'required'
 };
 
+const ResetPasswordSchema = {
+    password: 'required',
+    password2: 'required',
+    hash: 'required|minLength:30'
+}
+
 const Validate = (data, schema) => {
     let v = new Validator(data, schema);
     return v.check();
@@ -20,5 +26,6 @@ const Validate = (data, schema) => {
 module.exports = {
     UserCreationSchema,
     UserLoginSchema,
+    ResetPasswordSchema,
     Validate
 };

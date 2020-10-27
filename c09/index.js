@@ -18,8 +18,11 @@ api.use(jwt({
     }).unless({
         path: [ // list of routes that are not checked for jw token
             { url: '/users', methods: ['POST', 'GET'] },
+            { url: '/users/confirm', methods: ['POST'] },
             // { url: /\/users\/.*/, methods: ['GET'] },
             { url: '/auth/login', methods: ['POST'] },
+            { url: '/auth/forgot-password', methods: ['POST'] },
+            { url: '/auth/reset-password', methods: ['POST'] },
         ]
     })
 );
@@ -29,10 +32,14 @@ api.get('/users', Users.getAll);
 api.get('/users/:id', Users.getOne);
 api.put('/users/:id', Users.update);
 api.delete('/users/:id', Users.remove);
+api.post('/users/confirm', Users.confirm);
 
 api.post('/auth/login', Auth.login);
 api.get('/auth/refresh-token', Auth.refreshToken);
 api.get('/auth/logout', Auth.logout);
+
+api.post('/auth/forgot-password', Auth.forgotPassword);
+api.post('/auth/reset-password', Auth.resetPassword);
 
 // check if the output is "unauthorized error"
 // and if so, show the "invalid token..." text

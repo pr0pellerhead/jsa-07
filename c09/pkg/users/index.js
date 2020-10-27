@@ -9,6 +9,7 @@ const User = mongoose.model(
         birthday: Date,
         phone: String,
         register_hash: String,
+        reset_password_hash: String,
         active: Boolean
     },
     'users'
@@ -33,7 +34,15 @@ const GetOneByEmail = (email) => {
 };
 
 const Update = (id, data) => {
-    return User.update({_id: id}, data);
+    return User.updateOne({_id: id}, data);
+};
+
+const UpdateByResetHash = (hash, data) => {
+    return User.updateOne({ reset_password_hash: hash }, data);
+};
+
+const UpdateByRegisterHash = (hash, data) => {
+    return User.updateOne({ register_hash: hash }, data);
 };
 
 const Remove = (id) => {
@@ -46,5 +55,7 @@ module.exports = {
     GetOne,
     GetOneByEmail,
     Update,
-    Remove
+    Remove,
+    UpdateByResetHash,
+    UpdateByRegisterHash
 };

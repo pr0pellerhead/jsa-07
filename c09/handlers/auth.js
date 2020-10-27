@@ -3,6 +3,8 @@ const UserModel = require('../pkg/users');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../pkg/config');
+const strings = require('../pkg/strings');
+const mailer = require('../pkg/mailer');
 
 const login = async (req, res) => {
     let v = await UserValidator.Validate(req.body, UserValidator.UserLoginSchema);
@@ -52,8 +54,46 @@ const logout = async (req, res) => {
     res.status(200).send('ok');
 };
 
+const forgotPassword = async (req, res) => {
+    try {
+        let u = await UserModel.GetOneByEmail(req.body.email);
+        if(!u) {
+            return res.status(404).send('Not Found');     
+        }
+        let rh = strings.randomString(30);
+        await UserModel.Update(u._id, { reset_password_hash: rh });
+        await mailer.sendEmail('RESET_PASSWORD', { hash: rh }, req.body.email);
+        return res.status(204).send('No Content');   
+    } catch(err) {
+        console.log(err);
+        res.status(500).send('Internal Server Error'); 
+    }
+};
+
+const resetPassword = async (req, res) => {
+    let v = await UserValidator.Validate(req.body, UserValidator.ResetPasswordSchema);
+    if (!v) {
+        console.log('validation error');
+        return res.status(400).send('Bad request [invalid data]');
+    }
+    if(req.body.password === req.body.password2) {
+        let password = bcrypt.hashSync(req.body.password);
+        await UserModel.UpdateByResetHash(req.body.hash, { password });
+        try {
+            return res.status(201).send('No Content');
+        } catch(err) {
+            console.log(err);
+            return res.status(201).send('Internal Server Error');
+        }
+    } else {
+        return res.status(400).send('Bad request [password mismatch]');
+    }
+};
+
 module.exports = {
     login,
     refreshToken,
-    logout
+    logout,
+    forgotPassword,
+    resetPassword
 };
